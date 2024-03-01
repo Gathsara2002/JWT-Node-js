@@ -8,7 +8,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/login', (req, res, next) => {
-res.send("user login");
+    res.send("user login");
 });
 
 module.exports = router;
