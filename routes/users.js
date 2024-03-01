@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
 });
 
 //store refresh token
-let refreshToken = [];
+let refreshTokens = [];
 
 router.post('/login', (req, res, next) => {
 
@@ -24,6 +24,29 @@ router.post('/login', (req, res, next) => {
     refreshToken.push(refreshToken);
     res.send({accessToken, refreshToken});
 
+});
+
+router.post('/token', (req, res, next) => {
+    const refreshToken = req.body.refreshToken;
+    if (refreshToken == null) {
+        res.sendStatus(401);
+    }
+    if (!refreshTokens.includes(refreshToken)) {
+        res.sendStatus(403);
+    }
+    jwt.verify(refreshToken, process.env.RE_TOKEN_KEY, (err, user) => {
+        if (err) {
+            res.sendStatus(403);
+        }
+        const accessToken = jwt.sign({name: user.name}, process.env.SECRET_KEY, {expiresIn: '20s'});
+        res.send({accessToken});
+    });
+});
+
+router.delete('/logout',(req,res)=>{
+    const refreshToken = req.body.refreshToken;
+    refreshTokens = refreshTokens.filter(t=> t !== refreshToken);
+    res.sendStatus(204);
 });
 
 module.exports = router;
