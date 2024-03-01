@@ -9,7 +9,14 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/login', (req, res, next) => {
-    res.send("user login");
+
+    //get data from req
+    const username = req.body.username;
+    //create payload
+    const user = {name: username};
+    //create token
+    const token = jwt.sign(user, process.env.SECRET_KEY);
+    res.send({token});
 });
 
 module.exports = router;
