@@ -8,6 +8,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var studentRouter = require('./routes/student');
 
+//auth middleware
+const auth = require('./auth/auth');
+
 var app = express();
 app.use(express.json());
 
@@ -23,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/student', studentRouter);
+app.use('/student', auth, studentRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

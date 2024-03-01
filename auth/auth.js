@@ -13,13 +13,14 @@ module.exports = function (req, res, next) {
         }
 
         //verify token
-        jwt.verify(token, process.env.TOKEN_KEY, (err, user) => {
+        jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
             if (err) {
-                res.sendStatus(403)
+                return res.sendStatus(403)
             }
             req.user = user;
             next();
         });
+
     } else {
         res.sendStatus(401)
     }

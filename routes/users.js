@@ -15,8 +15,9 @@ router.post('/login', (req, res, next) => {
     //create payload
     const user = {name: username};
     //create token
-    const token = jwt.sign(user, process.env.SECRET_KEY);
+    const token = jwt.sign(user, process.env.SECRET_KEY,{expiresIn: `20s`});
     res.send({token});
+
 });
 
 module.exports = router;
