@@ -21,7 +21,7 @@ router.post('/login', (req, res, next) => {
     const accessToken = jwt.sign(user, process.env.SECRET_KEY, {expiresIn: `20s`});
     //create refresh token
     const refreshToken = jwt.sign(user, process.env.REFRESH_SECRET_KEY, {expiresIn: `24h`});
-    refreshToken.push(refreshToken);
+    refreshTokens.push(refreshToken);
     res.send({accessToken, refreshToken});
 
 });
@@ -43,9 +43,9 @@ router.post('/token', (req, res, next) => {
     });
 });
 
-router.delete('/logout',(req,res)=>{
+router.delete('/logout', (req, res) => {
     const refreshToken = req.body.refreshToken;
-    refreshTokens = refreshTokens.filter(t=> t !== refreshToken);
+    refreshTokens = refreshTokens.filter(t => t !== refreshToken);
     res.sendStatus(204);
 });
 
